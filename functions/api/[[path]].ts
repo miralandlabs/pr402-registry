@@ -23,7 +23,11 @@ export async function onRequest(context: {
       ? FACILITATOR_BASES.preview
       : FACILITATOR_BASES.production;
 
-  const target = `${base}${url.pathname}${url.search}`;
+  // subscription-auth serves /v1/* (no /api prefix); pr402 facilitator uses /api/v1/*
+  const upstreamPath = url.pathname.startsWith("/api/v1/marketplace")
+    ? url.pathname.replace(/^\/api/, "")
+    : url.pathname;
+  const target = `${base}${upstreamPath}${url.search}`;
 
   const upstream = await fetch(target, {
     headers: { accept: "application/json" },

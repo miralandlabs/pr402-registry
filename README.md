@@ -17,7 +17,7 @@ Live site: [registry.pr402.org](https://registry.pr402.org)
 | Path | Upstream |
 |------|----------|
 | `/api/v1/facilitator/*` | [ipay.sh](https://ipay.sh) / [preview.ipay.sh](https://preview.ipay.sh) |
-| `/api/v1/marketplace/*` | [auth.ipay.sh](https://auth.ipay.sh) / [preview.auth.ipay.sh](https://preview.auth.ipay.sh) |
+| `/api/v1/marketplace/*` | [auth.ipay.sh](https://auth.ipay.sh) / [preview.auth.ipay.sh](https://preview.auth.ipay.sh) (`/v1/marketplace/*` — no `/api` on auth) |
 
 The UI toggle **Production / Preview** sets the `X-Registry-Network` header; the proxy picks the matching upstream.
 

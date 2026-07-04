@@ -26,7 +26,10 @@ function registryProxy(): Plugin {
         const network =
           req.headers["x-registry-network"] === "preview" ? "preview" : "production";
         const base = isMarketplace ? AUTH_BASES[network] : FACILITATOR_BASES[network];
-        const target = `${base}${url}`;
+        const upstreamPath = isMarketplace
+          ? url.replace(/^\/api(?=\/v1\/)/, "")
+          : url;
+        const target = `${base}${upstreamPath}`;
         try {
           const upstream = await fetch(target, {
             headers: { accept: "application/json" },
