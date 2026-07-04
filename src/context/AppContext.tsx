@@ -12,11 +12,13 @@ interface AppContextValue {
   locale: Locale;
   network: NetworkMode;
   tab: TabId;
+  subscriptionTotal: number | null;
   setTheme: (mode: ThemeMode) => void;
   toggleTheme: () => void;
   setLocale: (locale: Locale) => void;
   setNetwork: (network: NetworkMode) => void;
   setTab: (tab: TabId) => void;
+  setSubscriptionTotal: (total: number | null) => void;
   t: (key: MessageKey) => string;
 }
 
@@ -45,6 +47,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [tab, setTabState] = useState<TabId>(() =>
     readStorage(TAB_KEY, ["resources", "subscriptions", "providers", "oracles"] as const, "resources"),
   );
+  const [subscriptionTotal, setSubscriptionTotal] = useState<number | null>(null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -69,6 +72,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const setNetwork = (n: NetworkMode) => {
     setNetworkState(n);
+    setSubscriptionTotal(null);
     try {
       localStorage.setItem(NETWORK_KEY, n);
     } catch {
@@ -92,11 +96,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     locale,
     network,
     tab,
+    subscriptionTotal,
     setTheme,
     toggleTheme,
     setLocale,
     setNetwork,
     setTab,
+    setSubscriptionTotal,
     t,
   };
 

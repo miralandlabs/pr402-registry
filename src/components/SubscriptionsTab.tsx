@@ -29,7 +29,7 @@ function entryTitle(entry: SubscriptionListEntry): string {
 }
 
 export function SubscriptionsTab() {
-  const { network, locale, t } = useApp();
+  const { network, locale, t, setSubscriptionTotal } = useApp();
   const [filters, setFilters] = useState<SubscriptionFilters>({
     q: "",
     category: "",
@@ -62,6 +62,7 @@ export function SubscriptionsTab() {
         );
         setNextCursor(page.pagination.next_cursor);
         setNotice(page.notice);
+        if (!append) setSubscriptionTotal(page.pagination.total);
       } catch {
         setError(true);
         if (!append) setEntries([]);
@@ -70,7 +71,7 @@ export function SubscriptionsTab() {
         setLoadingMore(false);
       }
     },
-    [network, debouncedQ, filters.category, filters.tag],
+    [network, debouncedQ, filters.category, filters.tag, setSubscriptionTotal],
   );
 
   useEffect(() => {
