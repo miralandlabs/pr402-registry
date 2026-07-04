@@ -6,7 +6,7 @@ export const en = {
   tabProviders: "Sellers",
   tabOracles: "Oracles",
   tabHelper:
-    "Resources = atomic 402 endpoints. Subscriptions = time-window products. Pay-per-call APIs appear in Resources only.",
+    "Resources = atomic 402 endpoints. Subscriptions = time-window plans. Pay-per-call APIs appear in Resources only.",
   networkProduction: "Production",
   networkPreview: "Preview",
   themeLight: "Light",
