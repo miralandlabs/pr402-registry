@@ -36,7 +36,8 @@ function registryProxy(): Plugin {
           });
           res.statusCode = upstream.status;
           res.setHeader("content-type", upstream.headers.get("content-type") ?? "application/json");
-          res.setHeader("cache-control", "public, max-age=30");
+          res.setHeader("cache-control", "private, no-store");
+          res.setHeader("vary", "X-Registry-Network");
           const body = await upstream.text();
           res.end(body);
         } catch {

@@ -37,7 +37,8 @@ export async function onRequest(context: {
     status: upstream.status,
     headers: {
       "content-type": upstream.headers.get("content-type") ?? "application/json",
-      "cache-control": "public, max-age=30",
+      "cache-control": "private, no-store",
+      vary: "X-Registry-Network",
     },
   });
 }

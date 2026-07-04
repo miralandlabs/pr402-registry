@@ -31,6 +31,7 @@ export function authOrigin(network: NetworkMode): string {
 
 async function apiFetch<T>(path: string, network: NetworkMode): Promise<T> {
   const res = await fetch(path, {
+    cache: "no-store",
     headers: {
       accept: "application/json",
       "X-Registry-Network": network,
