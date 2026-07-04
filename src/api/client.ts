@@ -5,6 +5,8 @@ import type {
   PublicProvidersPage,
   PublicResourceSingle,
   PublicResourcesPage,
+  SubscriptionDetail,
+  SubscriptionsPage,
 } from "../types";
 
 export const DOCS_ORIGIN = "https://docs.ipay.sh";
@@ -14,8 +16,17 @@ const FACILITATOR_ORIGINS: Record<NetworkMode, string> = {
   preview: "https://preview.ipay.sh",
 };
 
+const AUTH_ORIGINS: Record<NetworkMode, string> = {
+  production: "https://auth.ipay.sh",
+  preview: "https://preview.auth.ipay.sh",
+};
+
 export function facilitatorOrigin(network: NetworkMode): string {
   return FACILITATOR_ORIGINS[network];
+}
+
+export function authOrigin(network: NetworkMode): string {
+  return AUTH_ORIGINS[network];
 }
 
 async function apiFetch<T>(path: string, network: NetworkMode): Promise<T> {
@@ -73,8 +84,39 @@ export function fetchProviderByWallet(
   return apiFetch(`/api/v1/facilitator/providers/${encodeURIComponent(wallet)}`, network);
 }
 
+export function fetchSubscriptions(
+  network: NetworkMode,
+  params: Record<string, string | number | undefined>,
+): Promise<SubscriptionsPage> {
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== "") qs.set(k, String(v));
+  }
+  const q = qs.toString();
+  return apiFetch(`/api/v1/marketplace/subscriptions${q ? `?${q}` : ""}`, network);
+}
+
+export function fetchSubscriptionById(
+  network: NetworkMode,
+  serviceId: string,
+): Promise<SubscriptionDetail> {
+  return apiFetch(
+    `/api/v1/marketplace/subscriptions/${encodeURIComponent(serviceId)}`,
+    network,
+  );
+}
+
+export function fetchSubscriptionsTotal(network: NetworkMode): Promise<number> {
+  return fetchSubscriptions(network, { limit: 1 }).then((p) => p.pagination.total);
+}
+
 export function railsUrl(network: NetworkMode, resourceUrl: string): string {
   return `${facilitatorOrigin(network)}/resources?url=${encodeURIComponent(resourceUrl)}`;
+}
+
+export function subscribeInfoUrl(serviceUrl: string): string {
+  const base = serviceUrl.replace(/\/$/, "");
+  return `${base}/api/v1/subscribe/info`;
 }
 
 export function truncateWallet(wallet: string, chars = 4): string {

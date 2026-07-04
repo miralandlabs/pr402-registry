@@ -43,7 +43,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     readStorage(NETWORK_KEY, ["production", "preview"] as const, "production"),
   );
   const [tab, setTabState] = useState<TabId>(() =>
-    readStorage(TAB_KEY, ["resources", "providers", "oracles"] as const, "resources"),
+    readStorage(TAB_KEY, ["resources", "subscriptions", "providers", "oracles"] as const, "resources"),
   );
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { AppProvider, useApp } from "./context/AppContext";
 import { Header } from "./components/Header";
 import { ResourceTab } from "./components/ResourceTab";
+import { SubscriptionsTab } from "./components/SubscriptionsTab";
 import { ProviderTab } from "./components/ProviderTab";
 import { OraclesTab } from "./components/OraclesTab";
 import { Footer } from "./components/Footer";
@@ -12,8 +13,10 @@ function RegistryShell() {
     <div className="shell">
       <Header />
       {tab === "resources" && <ResourceTab />}
+      {tab === "subscriptions" && <SubscriptionsTab />}
       {tab === "providers" && <ProviderTab />}
       {tab === "oracles" && <OraclesTab />}
+      <p className="tab-helper">{t("tabHelper")}</p>
       <p className="agent-note">{t("agentNote")}</p>
       <Footer />
     </div>

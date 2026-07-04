@@ -260,6 +260,29 @@
   background: var(--fair-accent-surface);
 }
 
+.badge-muted {
+  margin-left: 0.35rem;
+  color: var(--fair-text-muted);
+  background: var(--fair-bg-tertiary);
+}
+
+.tab-helper {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--fair-text-secondary);
+  margin: 0.75rem 0 0;
+  padding: 0 1rem;
+}
+
+.tier-list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.tier-list li {
+  margin-bottom: 0.35rem;
+}
+
 .tag-row {
   display: flex;
   flex-wrap: wrap;

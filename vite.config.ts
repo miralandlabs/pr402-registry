@@ -6,19 +6,27 @@ const FACILITATOR_BASES = {
   preview: "https://preview.ipay.sh",
 } as const;
 
-function facilitatorProxy(): Plugin {
+const AUTH_BASES = {
+  production: "https://auth.ipay.sh",
+  preview: "https://preview.auth.ipay.sh",
+} as const;
+
+function registryProxy(): Plugin {
   return {
-    name: "facilitator-proxy",
+    name: "registry-proxy",
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (!req.url?.startsWith("/api/v1/facilitator")) {
+        const url = req.url ?? "";
+        const isFacilitator = url.startsWith("/api/v1/facilitator");
+        const isMarketplace = url.startsWith("/api/v1/marketplace");
+        if (!isFacilitator && !isMarketplace) {
           next();
           return;
         }
         const network =
           req.headers["x-registry-network"] === "preview" ? "preview" : "production";
-        const base = FACILITATOR_BASES[network];
-        const target = `${base}${req.url}`;
+        const base = isMarketplace ? AUTH_BASES[network] : FACILITATOR_BASES[network];
+        const target = `${base}${url}`;
         try {
           const upstream = await fetch(target, {
             headers: { accept: "application/json" },
@@ -31,7 +39,7 @@ function facilitatorProxy(): Plugin {
         } catch {
           res.statusCode = 502;
           res.setHeader("content-type", "application/json");
-          res.end(JSON.stringify({ error: "Facilitator proxy failed" }));
+          res.end(JSON.stringify({ error: "Upstream proxy failed" }));
         }
       });
     },
@@ -39,7 +47,7 @@ function facilitatorProxy(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), facilitatorProxy()],
+  plugins: [react(), registryProxy()],
   server: {
     port: 5174,
   },
