@@ -5,7 +5,7 @@ import type { DirectoryStats, Locale, NetworkMode } from "../types";
 import { useApp } from "../context/AppContext";
 
 export function Header() {
-  const { theme, locale, network, tab, subscriptionTotal, toggleTheme, setLocale, setNetwork, setTab, t } =
+  const { theme, locale, network, tab, toggleTheme, setLocale, setNetwork, setTab, t } =
     useApp();
   const [stats, setStats] = useState<DirectoryStats | null>(null);
   const [statsError, setStatsError] = useState(false);
@@ -28,7 +28,6 @@ export function Header() {
 
   const tabs = [
     { id: "resources" as const, label: t("tabResources") },
-    { id: "subscriptions" as const, label: t("tabSubscriptions") },
     { id: "providers" as const, label: t("tabProviders") },
     { id: "oracles" as const, label: t("tabOracles") },
   ];
@@ -104,12 +103,6 @@ export function Header() {
               <div className="stat-card">
                 <strong>{stats.resources.byScheme["sla-escrow"] ?? 0}</strong>
                 <span>{t("statEscrow")}</span>
-              </div>
-            )}
-            {subscriptionTotal != null && (
-              <div className="stat-card">
-                <strong>{subscriptionTotal}</strong>
-                <span>{t("statSubscriptions")}</span>
               </div>
             )}
             <div className="stat-meta">

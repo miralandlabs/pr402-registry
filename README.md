@@ -1,6 +1,6 @@
 # pr402 Registry
 
-Public directory for x402 on Solana — payable **Resources**, **Subscriptions**, **Sellers**, and **Oracles**.
+Public directory for x402 on Solana — payable **Resources**, **Sellers**, and **Oracles**.
 
 Live site: [registry.pr402.org](https://registry.pr402.org)
 
@@ -17,7 +17,6 @@ Live site: [registry.pr402.org](https://registry.pr402.org)
 | Path | Upstream |
 |------|----------|
 | `/api/v1/facilitator/*` | [ipay.sh](https://ipay.sh) / [preview.ipay.sh](https://preview.ipay.sh) |
-| `/api/v1/marketplace/*` | [auth.ipay.sh](https://auth.ipay.sh) / [preview.auth.ipay.sh](https://preview.auth.ipay.sh) (`/v1/marketplace/*` — no `/api` on auth) |
 
 The UI toggle **Production / Preview** sets the `X-Registry-Network` header; the proxy picks the matching upstream.
 
@@ -65,7 +64,7 @@ npm run deploy
 ### What gets deployed
 
 - `dist/` — built SPA (`index.html`, assets, `_redirects` for client routing)
-- `functions/` — edge proxy for `/api/v1/facilitator/*` and `/api/v1/marketplace/*`
+- `functions/` — edge proxy for `/api/v1/facilitator/*`
 
 ## Auto deploy from GitHub
 
@@ -83,7 +82,7 @@ Pages → Create project → **Connect to Git** → select `miralandlabs/pr402-r
 
 Cloudflare builds and deploys on every push to the connected branch. Pages Functions in `functions/` are picked up automatically.
 
-### B) GitHub Actions (same pattern as solrisk / subscription-auth)
+### B) GitHub Actions (same pattern as solrisk)
 
 Add repo secrets:
 
@@ -130,9 +129,8 @@ curl -s "https://registry.pr402.org/api/v1/facilitator/directory/stats" \
   -H "X-Registry-Network: production" | head -c 200
 ```
 
-Open the site → **Resources** and **Subscriptions** tabs should load (Subscriptions needs subscription-auth marketplace API deployed).
+Open the site → **Resources**, **Sellers**, and **Oracles** tabs should load.
 
 ## Related
 
 - [pr402 discovery docs](https://docs.ipay.sh)
-- [subscription-auth](https://github.com/miralandlabs/subscription-auth) — Subscriptions catalog API
